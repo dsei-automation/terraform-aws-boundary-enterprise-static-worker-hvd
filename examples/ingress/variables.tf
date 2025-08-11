@@ -134,12 +134,6 @@ variable "worker_subnet_ids" {
   description = "List of subnet IDs to use for the EC2 instance. Unless the workers need to be publicly exposed (example: ingress workers), use private subnets."
 }
 
-variable "lb_subnet_ids" {
-  type        = list(string)
-  description = "List of subnet IDs to use for the proxy Network Load Balancer. Unless the lb needs to be publicly exposed (example: downstream Boundary Workers connecting to the ingress workers over the Internet), use private subnets."
-  default     = null
-}
-
 variable "cidr_allow_ingress_boundary_9202" {
   type        = list(string)
   description = "List of CIDR ranges to allow ingress traffic on port 9202 to workers."
@@ -164,22 +158,6 @@ variable "worker_is_internal" {
   default     = true
 }
 
-variable "create_lb" {
-  type        = bool
-  description = "Boolean to create a Network Load Balancer for Boundary. Should be true if downstream workers will connect to these workers."
-  default     = false
-  validation {
-    condition     = var.create_lb == true ? var.lb_subnet_ids != null : true
-    error_message = "The `lb_subnet_ids` must be provided if `create_lb` is set to `true`."
-  }
-}
-
-variable "lb_is_internal" {
-  type        = bool
-  description = "Boolean to create an internal (private) Proxy load balancer. The `lb_subnet_ids` must be private subnets if this is set to `true`."
-  default     = true
-}
-
 #------------------------------------------------------------------------------
 # Compute
 #------------------------------------------------------------------------------
@@ -194,24 +172,6 @@ variable "ec2_os_distro" {
   }
 }
 
-variable "asg_instance_count" {
-  type        = number
-  description = "Desired number of Boundary EC2 instances to run in Autoscaling Group. Leave at `1` unless Active/Active is enabled."
-  default     = 1
-}
-
-variable "asg_max_size" {
-  type        = number
-  description = "Max number of Boundary EC2 instances to run in Autoscaling Group."
-  default     = 3
-}
-
-variable "asg_health_check_grace_period" {
-  type        = number
-  description = "The amount of time to wait for a new Boundary EC2 instance to become healthy. If this threshold is breached, the ASG will terminate the instance and launch a new one."
-  default     = 300
-}
-
 variable "ec2_ami_id" {
   type        = string
   description = "Custom AMI ID for Boundary EC2 Launch Template. If specified, value of `os_distro` must coincide with this custom AMI OS distro."
@@ -220,6 +180,17 @@ variable "ec2_ami_id" {
   validation {
     condition     = try((length(var.ec2_ami_id) > 4 && substr(var.ec2_ami_id, 0, 4) == "ami-"), var.ec2_ami_id == null)
     error_message = "Value must start with \"ami-\"."
+  }
+}
+
+variable "ec2_instance_count" {
+  type        = number
+  description = "Number of Boundary EC2 instances to create. This should be set to a minimum of 1, or alternatively 2 or more workers for high availability."
+  default     = 2
+
+  validation {
+    condition     = var.ec2_instance_count >= 1 && var.ec2_instance_count <= 10
+    error_message = "The number of Boundary EC2 instances must be between 1 and 10."
   }
 }
 

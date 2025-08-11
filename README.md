@@ -15,7 +15,6 @@ Terraform module aligned with HashiCorp Validated Designs (HVD) to deploy Bounda
 
 - AWS VPC ID and the following subnets:
   - EC2 (worker) subnet IDs.
-  - (Optional) NLB Subnet IDs if a load balancer will be deployed.
 - (Optional) KMS VPC Endpoint configured within VPC.
 - Security Groups:
   - This module will create the necessary Security Groups and attach them to the applicable resources.
@@ -36,9 +35,9 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 
 1. Create/configure/validate the applicable [prerequisites](#prerequisites).
 
-1. Nested within the [examples](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/) directory are subdirectories that contain ready-made Terraform configurations of example scenarios for how to call and deploy this module. To get started, choose an example scenario. If you are not sure which example scenario to start with, then we recommend starting with the [ingress](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/ingress) example.
+2. Nested within the [examples](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/) directory are subdirectories that contain ready-made Terraform configurations of example scenarios for how to call and deploy this module. To get started, choose an example scenario. If you are not sure which example scenario to start with, then we recommend starting with the [ingress](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/ingress) example.
 
-1. Copy all of the Terraform files from your example scenario of choice into a new destination directory to create your root Terraform configuration that will manage your Boundary deployment. If you are not sure where to create this new directory, it is common for us to see users create an `environments/` directory at the root of this repo, and then a subdirectory for each Boundary instance deployment, like so:
+3. Copy all of the Terraform files from your example scenario of choice into a new destination directory to create your root Terraform configuration that will manage your Boundary deployment. If you are not sure where to create this new directory, it is common for us to see users create an `environments/` directory at the root of this repo, and then a subdirectory for each Boundary instance deployment, like so:
 
     ```sh
     .
@@ -59,15 +58,15 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 
     >📝 Note: in this example, the user will have two separate Boundary deployments; one for their `sandbox` environment, and one for their `production` environment. This is recommended, but not required.
 
-1. (Optional) Uncomment and update the [S3 remote state backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3) configuration provided in the `backend.tf` file with your own custom values. While this step is highly recommended, it is technically not required to use a remote backend config for your Boundary deployment.
+4. (Optional) Uncomment and update the [S3 remote state backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3) configuration provided in the `backend.tf` file with your own custom values. While this step is highly recommended, it is technically not required to use a remote backend config for your Boundary deployment.
 
-1. Populate your own custom values into the `terraform.tfvars.example` file that was provided, and remove the `.example` file extension such that the file is now named `terraform.tfvars`.
+5. Populate your own custom values into the `terraform.tfvars.example` file that was provided, and remove the `.example` file extension such that the file is now named `terraform.tfvars`.
 
     >📝 Note: The `friendly_name_prefix` variable should be unique for every agent deployment.
 
-1. Navigate to the directory of your newly created Terraform configuration for your Boundary Worker deployment, and run `terraform init`, `terraform plan`, and `terraform apply`.
+6. Navigate to the directory of your newly created Terraform configuration for your Boundary Worker deployment, and run `terraform init`, `terraform plan`, and `terraform apply`.
 
-1. After the `terraform apply` finishes successfully, you can monitor the install progress by connecting to the VM in your Boundary worker ASG using SSH or AWS SSM and observing the cloud-init logs:
+7. After the `terraform apply` finishes successfully, you can monitor the install progress by connecting to the VM in your Boundary worker EC2 Instance(s) using SSH or AWS SSM and observing the cloud-init logs:
 
     Higher-level logs:
 
@@ -89,23 +88,23 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
     [INFO] boundary_custom_data script finished successfully!
     ```
 
-1. Once the cloud-init script finishes successfully, while still connected to the VM via SSH you can check the status of the boundary service:
+8. Once the cloud-init script finishes successfully, while still connected to the VM via SSH you can check the status of the boundary service:
 
     ```sh
     sudo systemctl status boundary
     ```
 
-1. After the Boundary Worker is deployed the Boundary worker should show up in the Boundary Clusters workers
+9. After the Boundary Worker is deployed the Boundary worker should show up in the Boundary Clusters workers
 
 ## Usage - HCP Boundary
 
 1. In HCP Boundary go to `Workers` and start creating a new worker. Copy the `Boundary Cluster ID`.
 
-1. Create/configure/validate the applicable [prerequisites](#prerequisites).
+2. Create/configure/validate the applicable [prerequisites](#prerequisites).
 
-1. Nested within the [examples](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/) directory are subdirectories that contain ready-made Terraform configurations of example scenarios for how to call and deploy this module. To get started, choose an example scenario. If you are not sure which example scenario to start with, then we recommend starting with the [default](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/default) example.
+3. Nested within the [examples](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/) directory are subdirectories that contain ready-made Terraform configurations of example scenarios for how to call and deploy this module. To get started, choose an example scenario. If you are not sure which example scenario to start with, then we recommend starting with the [default](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/examples/default) example.
 
-1. Copy all of the Terraform files from your example scenario of choice into a new destination directory to create your root Terraform configuration that will manage your Boundary deployment. If you are not sure where to create this new directory, it is common for us to see users create an `environments/` directory at the root of this repo, and then a subdirectory for each Boundary instance deployment, like so:
+4. Copy all of the Terraform files from your example scenario of choice into a new destination directory to create your root Terraform configuration that will manage your Boundary deployment. If you are not sure where to create this new directory, it is common for us to see users create an `environments/` directory at the root of this repo, and then a subdirectory for each Boundary instance deployment, like so:
 
     ```sh
       .
@@ -126,15 +125,15 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 
     >📝 Note: in this example, the user will have two separate Boundary deployments; one for their `sandbox` environment, and one for their `production` environment. This is recommended, but not required.
 
-1. (Optional) Uncomment and update the [S3 remote state backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3) configuration provided in the `backend.tf` file with your own custom values. While this step is highly recommended, it is technically not required to use a remote backend config for your Boundary deployment.
+5. (Optional) Uncomment and update the [S3 remote state backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3) configuration provided in the `backend.tf` file with your own custom values. While this step is highly recommended, it is technically not required to use a remote backend config for your Boundary deployment.
 
-1. Populate your own custom values into the `terraform.tfvars.example` file that was provided, and remove the `.example` file extension such that the file is now named `terraform.tfvars`. Ensure to set the `hcp_boundary_cluster_id` variable with the Boundary Cluster ID from step 1.
+6. Populate your own custom values into the `terraform.tfvars.example` file that was provided, and remove the `.example` file extension such that the file is now named `terraform.tfvars`. Ensure to set the `hcp_boundary_cluster_id` variable with the Boundary Cluster ID from step 1.
 
     >📝 Note: The `friendly_name_prefix` variable should be unique for every agent deployment.
 
-1. Navigate to the directory of your newly created Terraform configuration for your Boundary Worker deployment, and run `terraform init`, `terraform plan`, and `terraform apply`.
+7. Navigate to the directory of your newly created Terraform configuration for your Boundary Worker deployment, and run `terraform init`, `terraform plan`, and `terraform apply`.
 
-1. After the `terraform apply` finishes successfully, you can monitor the install progress by connecting to the VM in your Boundary worker ASG using SSH or AWS SSM and observing the cloud-init logs:
+8. After the `terraform apply` finishes successfully, you can monitor the install progress by connecting to the VM in your Boundary worker ASG using SSH or AWS SSM and observing the cloud-init logs:
 
     Higher-level logs:
 
@@ -156,17 +155,17 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
     [INFO] boundary_custom_data script finished successfully!
     ```
 
-1. Once the cloud-init script finishes successfully, while still connected to the VM via SSH you can check the status of the boundary service:
+9. Once the cloud-init script finishes successfully, while still connected to the VM via SSH you can check the status of the boundary service:
 
     ```sh
     sudo systemctl status boundary
     ```
 
-1. While still connected to the Boundary Worker, `sudo journalctl -xu boundary` to review the Boundary Logs.
+10. While still connected to the Boundary Worker, `sudo journalctl -xu boundary` to review the Boundary Logs.
 
-1. Copy the `Worker Auth Registration Request` string and paste this into the `Worker Auth Registration Request` field of the new Boundary Worker in the HCP console and click `Register Worker`.
+11. Copy the `Worker Auth Registration Request` string and paste this into the `Worker Auth Registration Request` field of the new Boundary Worker in the HCP console and click `Register Worker`.
 
-1. Worker should show up in HCP Boundary console
+12. Worker should show up in HCP Boundary console
 
 ## Docs
 
@@ -177,15 +176,6 @@ Below are links to docs pages related to deployment customizations and day 2 ope
 - [Updating/modifying Boundary configuration settings](https://github.com/hashicorp/terraform-aws-boundary-enterprise-worker-hvd/blob/main/docs/boundary-config-settings.md)
 
 <!-- BEGIN_TF_DOCS -->
-## Module support
-
-This open source software is maintained by the HashiCorp Technical Field Organization, independently of our enterprise products. While our Support Engineering team provides dedicated support for our enterprise offerings, this open source software is not included.
-
-- For help using this open source software, please engage your account team.
-- To report bugs/issues with this open source software, please open them directly against this code repository using the GitHub issues feature.
-
-Please note that there is no official Service Level Agreement (SLA) for support of this software as a HashiCorp customer. This software falls under the definition of Community Software/Versions in your Agreement. We appreciate your understanding and collaboration in improving our open source projects.
-
 ## Requirements
 
 | Name | Version |
@@ -203,28 +193,18 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 
 | Name | Type |
 |------|------|
-| [aws_autoscaling_group.boundary](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
+| [aws_eip.worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_iam_instance_profile.boundary_ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
 | [aws_iam_role.boundary_ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.boundary_ec2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
 | [aws_iam_role_policy_attachment.aws_ssm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_launch_template.boundary](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
-| [aws_lb.proxy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
-| [aws_lb_listener.proxy_lb_9202](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
-| [aws_lb_target_group.proxy_lb_9202](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
+| [aws_instance.worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_security_group.ec2_allow_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group.ec2_allow_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_security_group.proxy_lb_allow_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
-| [aws_security_group.proxy_lb_allow_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.ec2_allow_egress_all](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ec2_allow_ingress_9202_cidr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.ec2_allow_ingress_9202_from_lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ec2_allow_ingress_9202_sg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.ec2_allow_ingress_9203_from_lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ec2_allow_ingress_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.proxy_lb_allow_egress_all](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.proxy_lb_allow_ingress_9202_cidr](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [aws_security_group_rule.proxy_lb_allow_ingress_9202_sg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_ami.amzn2](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.centos](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_ami.rhel](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
@@ -244,10 +224,10 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_friendly_name_prefix"></a> [friendly\_name\_prefix](#input\_friendly\_name\_prefix) | Friendly name prefix used for uniquely naming AWS resources. This should be unique across all deployments | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of VPC where Boundary will be deployed. | `string` | n/a | yes |
+| <a name="input_worker_subnet_ids"></a> [worker\_subnet\_ids](#input\_worker\_subnet\_ids) | List of subnet IDs to use for the EC2 instance. Unless the workers need to be publicly exposed (example: ingress workers), use private subnets. | `list(string)` | n/a | yes |
 | <a name="input_additional_package_names"></a> [additional\_package\_names](#input\_additional\_package\_names) | List of additional repository package names to install | `set(string)` | `[]` | no |
-| <a name="input_asg_health_check_grace_period"></a> [asg\_health\_check\_grace\_period](#input\_asg\_health\_check\_grace\_period) | The amount of time to wait for a new Boundary EC2 instance to become healthy. If this threshold is breached, the ASG will terminate the instance and launch a new one. | `number` | `300` | no |
-| <a name="input_asg_instance_count"></a> [asg\_instance\_count](#input\_asg\_instance\_count) | Desired number of Boundary EC2 instances to run in Autoscaling Group. Leave at `1` unless Active/Active is enabled. | `number` | `1` | no |
-| <a name="input_asg_max_size"></a> [asg\_max\_size](#input\_asg\_max\_size) | Max number of Boundary EC2 instances to run in Autoscaling Group. | `number` | `3` | no |
 | <a name="input_boundary_upstream"></a> [boundary\_upstream](#input\_boundary\_upstream) | List of IP addresses or FQDNs for the worker to initially connect to. This could be a controller or worker. This is not used when connecting to HCP Boundary. | `list(string)` | `null` | no |
 | <a name="input_boundary_upstream_port"></a> [boundary\_upstream\_port](#input\_boundary\_upstream\_port) | Port for the worker to connect to. Typically 9201 to connect to a controller, 9202 to a worker. | `number` | `9202` | no |
 | <a name="input_boundary_version"></a> [boundary\_version](#input\_boundary\_version) | Version of Boundary to install. | `string` | `"0.17.1+ent"` | no |
@@ -257,7 +237,6 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 | <a name="input_cidr_allow_ingress_ec2_ssh"></a> [cidr\_allow\_ingress\_ec2\_ssh](#input\_cidr\_allow\_ingress\_ec2\_ssh) | List of CIDR ranges to allow SSH ingress to Boundary EC2 instance (i.e. bastion IP, client/workstation IP, etc.). | `list(string)` | `[]` | no |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Map of common tags for taggable AWS resources. | `map(string)` | `{}` | no |
 | <a name="input_create_boundary_worker_role"></a> [create\_boundary\_worker\_role](#input\_create\_boundary\_worker\_role) | Boolean to create an IAM role for Boundary Worker EC2 instances. | `bool` | `true` | no |
-| <a name="input_create_lb"></a> [create\_lb](#input\_create\_lb) | Boolean to create a Network Load Balancer for Boundary. Should be true if downstream workers will connect to these workers. | `bool` | `false` | no |
 | <a name="input_ebs_iops"></a> [ebs\_iops](#input\_ebs\_iops) | The amount of IOPS to provision for a `gp3` volume. Must be at least `3000`. | `number` | `3000` | no |
 | <a name="input_ebs_is_encrypted"></a> [ebs\_is\_encrypted](#input\_ebs\_is\_encrypted) | Boolean for encrypting the root block device of the Boundary EC2 instance(s). | `bool` | `false` | no |
 | <a name="input_ebs_kms_key_arn"></a> [ebs\_kms\_key\_arn](#input\_ebs\_kms\_key\_arn) | ARN of KMS key to encrypt EC2 EBS volumes. | `string` | `null` | no |
@@ -266,20 +245,16 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 | <a name="input_ebs_volume_type"></a> [ebs\_volume\_type](#input\_ebs\_volume\_type) | EBS volume type for Boundary EC2 instances. | `string` | `"gp3"` | no |
 | <a name="input_ec2_allow_ssm"></a> [ec2\_allow\_ssm](#input\_ec2\_allow\_ssm) | Boolean to attach the `AmazonSSMManagedInstanceCore` policy to the Boundary instance role, allowing the SSM agent (if present) to function. | `bool` | `false` | no |
 | <a name="input_ec2_ami_id"></a> [ec2\_ami\_id](#input\_ec2\_ami\_id) | Custom AMI ID for Boundary EC2 Launch Template. If specified, value of `os_distro` must coincide with this custom AMI OS distro. | `string` | `null` | no |
+| <a name="input_ec2_instance_count"></a> [ec2\_instance\_count](#input\_ec2\_instance\_count) | Number of Boundary EC2 instances to create. This should be set to a minimum of 1, or alternatively 2 or more workers for high availability. | `number` | `2` | no |
 | <a name="input_ec2_instance_size"></a> [ec2\_instance\_size](#input\_ec2\_instance\_size) | EC2 instance type for Boundary EC2 Launch Template. Regions may have different instance types available. | `string` | `"m5.2xlarge"` | no |
 | <a name="input_ec2_os_distro"></a> [ec2\_os\_distro](#input\_ec2\_os\_distro) | Linux OS distribution for Boundary EC2 instance. Choose from `amzn2`, `ubuntu`, `rhel`, `centos`. | `string` | `"ubuntu"` | no |
 | <a name="input_ec2_ssh_key_pair"></a> [ec2\_ssh\_key\_pair](#input\_ec2\_ssh\_key\_pair) | Name of existing SSH key pair to attach to Boundary EC2 instance. | `string` | `""` | no |
 | <a name="input_enable_session_recording"></a> [enable\_session\_recording](#input\_enable\_session\_recording) | Boolean to enable session recording. | `bool` | `false` | no |
-| <a name="input_friendly_name_prefix"></a> [friendly\_name\_prefix](#input\_friendly\_name\_prefix) | Friendly name prefix used for uniquely naming AWS resources. This should be unique across all deployments | `string` | n/a | yes |
 | <a name="input_hcp_boundary_cluster_id"></a> [hcp\_boundary\_cluster\_id](#input\_hcp\_boundary\_cluster\_id) | ID of the Boundary cluster in HCP. Only used when using HCP Boundary. | `string` | `""` | no |
 | <a name="input_kms_endpoint"></a> [kms\_endpoint](#input\_kms\_endpoint) | AWS VPC endpoint for KMS service. | `string` | `""` | no |
 | <a name="input_kms_worker_arn"></a> [kms\_worker\_arn](#input\_kms\_worker\_arn) | KMS ID of the worker-auth kms key. | `string` | `""` | no |
-| <a name="input_lb_is_internal"></a> [lb\_is\_internal](#input\_lb\_is\_internal) | Boolean to create an internal (private) Proxy load balancer. The `lb_subnet_ids` must be private subnets if this is set to `true`. | `bool` | `true` | no |
-| <a name="input_lb_subnet_ids"></a> [lb\_subnet\_ids](#input\_lb\_subnet\_ids) | List of subnet IDs to use for the proxy Network Load Balancer. Unless the lb needs to be publicly exposed (example: downstream Boundary Workers connecting to the ingress workers over the Internet), use private subnets. | `list(string)` | `null` | no |
 | <a name="input_sg_allow_ingress_boundary_9202"></a> [sg\_allow\_ingress\_boundary\_9202](#input\_sg\_allow\_ingress\_boundary\_9202) | List of Security Groups to allow ingress traffic on port 9202 to workers. | `list(string)` | `[]` | no |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of VPC where Boundary will be deployed. | `string` | n/a | yes |
 | <a name="input_worker_is_internal"></a> [worker\_is\_internal](#input\_worker\_is\_internal) | Boolean to create give the worker an internal IP address only or give it an external IP address. | `bool` | `true` | no |
-| <a name="input_worker_subnet_ids"></a> [worker\_subnet\_ids](#input\_worker\_subnet\_ids) | List of subnet IDs to use for the EC2 instance. Unless the workers need to be publicly exposed (example: ingress workers), use private subnets. | `list(string)` | n/a | yes |
 | <a name="input_worker_tags"></a> [worker\_tags](#input\_worker\_tags) | Map of extra tags to apply to Boundary Worker Configuration. var.common\_tags will be merged with this map. | `map(string)` | `{}` | no |
 
 ## Outputs
@@ -287,5 +262,5 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 | Name | Description |
 |------|-------------|
 | <a name="output_boundary_worker_iam_role_name"></a> [boundary\_worker\_iam\_role\_name](#output\_boundary\_worker\_iam\_role\_name) | Name of the IAM role for Boundary Worker instances. |
-| <a name="output_proxy_lb_dns_name"></a> [proxy\_lb\_dns\_name](#output\_proxy\_lb\_dns\_name) | DNS name of the Load Balancer. |
+| <a name="output_workers"></a> [workers](#output\_workers) | Details of the Boundary Worker EC2 instances. |
 <!-- END_TF_DOCS -->

@@ -34,14 +34,13 @@ module "boundary" {
   # Networking
   vpc_id                           = var.vpc_id
   worker_subnet_ids                = var.worker_subnet_ids
-  create_lb                        = var.create_lb
   cidr_allow_ingress_boundary_9202 = var.cidr_allow_ingress_boundary_9202
   cidr_allow_ingress_ec2_ssh       = var.cidr_allow_ingress_ec2_ssh
 
   # Compute
   ec2_os_distro      = var.ec2_os_distro
   ec2_ssh_key_pair   = var.ec2_ssh_key_pair
-  asg_instance_count = var.asg_instance_count
+  ec2_instance_count = var.ec2_instance_count
 
   #IAM
   ec2_allow_ssm                 = var.ec2_allow_ssm

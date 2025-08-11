@@ -2,12 +2,6 @@
 
 On this page are various deployment customizations and their corresponding input variables that you may set to meet your requirements.
 
-## Load Balancing
-
-This module supports the creation of a network passthrough load balancer for the deployed Workers. This should be enabled when these Workers will have downstream Workers connecting to the Workers deployed in this module. This is controlled by the variable `create_lb` which is defaulted to `false`
-
-This load balancer is internal only and downstream workers should be connecting to upstream workers over private connectivity.
-
 ## Boundary Worker Tags
 
 All tags in the `common_tags` variable will be applied to the Boundary Worker tags configuration. Additional tags to be added to the Worker config are controlled with the `worker_tags` variable.
@@ -33,7 +27,7 @@ If you require the use of a customer-managed key(s) (CMK) to encrypt your AWS re
 ```hcl
 ebs_kms_key_arn   = "<ebs-kms-key-arn>"
 rds_kms_key_arn   = "<rds-kms-key-arn>"
-```
+
 
 ## Custom AMI
 
