@@ -1,6 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-output "boundary_proxy_lb_dns_name" {
-  value = module.boundary.proxy_lb_dns_name
+output "workers" {
+  value       = module.boundary.workers
+  description = "Details of the Boundary Worker EC2 instances."
 }
